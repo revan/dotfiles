@@ -1,0 +1,7 @@
+! Swap Caps and Esc
+remove Lock = Caps_Lock
+keysym Escape = Caps_Lock
+keysym Caps_Lock = Escape
+
+! Right Super is Right-Click
+keysym Super_R = Menu
