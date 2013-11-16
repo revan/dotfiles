@@ -104,3 +104,9 @@ set background=dark
 "hide buffers instead of closing
 set hidden
 
+"Ctrl+backspace in insert to delete word
+inoremap <C-BS> <C-W>
+
+"Ctrl+S in insert to save
+inoremap <C-S> <Esc>:w<CR>a
+
