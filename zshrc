@@ -56,9 +56,12 @@ alias ls='LANG=en_US ls -Gh --file-type --color=tty --hide="\$RECYCLE.BIN" --hid
 
 alias subl="run /cygdrive/c/Program\ Files/Sublime\ Text\ 2/sublime_text.exe"
 alias heroku="/usr/local/heroku/bin/heroku"
-alias virtualenv="/cygdrive/c/Python27/Scripts/virtualenv"
-alias node="cygstart node"
+#alias virtualenv="/cygdrive/c/Python27/Scripts/virtualenv"
+#alias node="cygstart node"
 
 alias vm="ssh -l revan -p 2222 localhost"
 alias ilab="ssh rws114@man.cs.rutgers.edu"
 
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
