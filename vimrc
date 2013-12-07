@@ -46,13 +46,10 @@ set mouse=a
 
 set rtp+=/usr/lib/python3.3/site-packages/powerline/bindings/vim
 
-" Powerline
+"Display statusline always
 set laststatus=2
 
 set linebreak
-
-"don't scroll past end of file
-set scrolloff=100
 
 "better filename autocomplete
 set wildmode=longest,list,full
@@ -109,4 +106,15 @@ inoremap <C-BS> <C-W>
 
 "Ctrl+S in insert to save
 inoremap <C-S> <Esc>:w<CR>a
+
+let g:gitgutter_realtime = 0" Disable gitgutter interval-based auto-update.
+let g:gitgutter_eager = 0 	" Disable gitgutter update on focus/enter/tab.
+
+if has("gui_running")
+	set guioptions-=T "Hide toolbar
+endif
+
+"Highlight active line and column
+set cursorline
+set cursorcolumn
 
