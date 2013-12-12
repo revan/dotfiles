@@ -26,7 +26,7 @@ local -A schars
 autoload -Uz prompt_special_chars
 prompt_special_chars
 
-PS1="%(?..[%?] )%F{$fadebar_cwd}%B%K{$fadebar_cwd}$schars[333]$schars[262]$schars[261]$schars[260]%F{$userhost}%K{$fadebar_cwd}%B%~/%b%k%f%b%F{$fadebar_cwd}%K{black}$schars[333]$schars[262]$schars[261]$schars[260]%f%b"
+PS1="%(?..[%?] )%F{$fadebar_cwd}%B%K{$fadebar_cwd}$schars[333]$schars[262]$schars[261]$schars[260]%F{$userhost}%K{$fadebar_cwd}%B%~/%b%k%f%b%F{$fadebar_cwd}%K{black}$schars[333]$schars[262]$schars[261]$schars[260]%f%k"
 PS2="%F{$fadebar_cwd}%K{black}$schars[333]$schars[262]$schars[261]$schars[260]%f%k>"
 RPROMPT="%F{$date}%K{black}%B %D{%I:%M:%S%P}%F{$fadebar_cwd}%K{black}%B%b"
 
