@@ -1,3 +1,6 @@
+# Start tmux
+[[ -z "$TMUX" ]] && exec tmux
+
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
@@ -65,3 +68,4 @@ alias ilab="ssh rws114@man.cs.rutgers.edu"
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+

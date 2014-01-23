@@ -94,9 +94,9 @@ let g:tagbar_usearrows = 1
 nnoremap <leader>l :TagbarToggle<CR>
 
 "solarized colorscheme
-colorscheme solarized
-let g:solarized_contrast = "normal"
-set background=dark
+"colorscheme solarized
+"let g:solarized_contrast = "normal"
+"set background=dark
 
 "hide buffers instead of closing
 set hidden
