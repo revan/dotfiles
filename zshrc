@@ -66,6 +66,6 @@ alias vm="ssh -l revan -p 2222 localhost"
 alias ilab="ssh rws114@man.cs.rutgers.edu"
 
 
-### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+export PATH=".gem/ruby/2.0.0/bin:$PATH"
 
