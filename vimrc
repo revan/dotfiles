@@ -17,6 +17,7 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'lepture/vim-jinja'
 Bundle 'jmcantrell/vim-virtualenv'
 Bundle 'tpope/vim-markdown'
+Bundle 'suan/vim-instant-markdown'
 "Bundle 'Raimondi/delimitMate'
 
 
