@@ -1,13 +1,10 @@
 # Start tmux
 [[ -z "$TMUX" ]] && exec tmux
 
-# Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
 unsetopt autocd beep
-bindkey -e
-# End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
 zstyle :compinstall filename '/cygdrive/c/Users/Revan/.zshrc'
 
@@ -31,17 +28,28 @@ prompt_special_chars
 
 PS1="%(?..[%?] )%F{$fadebar_cwd}%B%K{$fadebar_cwd}$schars[333]$schars[262]$schars[261]$schars[260]%F{$userhost}%K{$fadebar_cwd}%B%~/%b%k%f%b%F{$fadebar_cwd}%K{black}$schars[333]$schars[262]$schars[261]$schars[260]%f%k"
 PS2="%F{$fadebar_cwd}%K{black}$schars[333]$schars[262]$schars[261]$schars[260]%f%k>"
-RPROMPT="%F{$date}%K{black}%B %D{%I:%M:%S%P}%F{$fadebar_cwd}%K{black}%B%b"
+#RPROMPT="%F{$date}%K{black}%B %D{%I:%M:%S%P}%F{$fadebar_cwd}%K{black}%B%b"
 
 prompt_opts=(cr subst percent)
 
+#vim mode
+bindkey -v
+
+function zle-line-init zle-keymap-select {
+	RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
+	RPS2=$RPS1
+	zle reset-prompt
+}
+zle -N zle-line-init
+zle -N zle-keymap-select
+
 #Fix keys
-bindkey '\e[H' beginning-of-line
-bindkey '\e[F' end-of-line
-bindkey ';5D' emacs-backward-word
-bindkey ';5C' emacs-forward-word
-bindkey "^[[3~" delete-char
-bindkey "^[3;5~" delete-char
+#bindkey '\e[H' beginning-of-line
+#bindkey '\e[F' end-of-line
+#bindkey ';5D' emacs-backward-word
+#bindkey ';5C' emacs-forward-word
+#bindkey "^[[3~" delete-char
+#bindkey "^[3;5~" delete-char
 
 #set window title to directory name
 case $TERM in
