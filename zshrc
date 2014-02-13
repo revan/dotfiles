@@ -28,7 +28,7 @@ prompt_special_chars
 
 PS1="%(?..[%?] )%F{$fadebar_cwd}%B%K{$fadebar_cwd}$schars[333]$schars[262]$schars[261]$schars[260]%F{$userhost}%K{$fadebar_cwd}%B%~/%b%k%f%b%F{$fadebar_cwd}%K{black}$schars[333]$schars[262]$schars[261]$schars[260]%f%k"
 PS2="%F{$fadebar_cwd}%K{black}$schars[333]$schars[262]$schars[261]$schars[260]%f%k>"
-#RPROMPT="%F{$date}%K{black}%B %D{%I:%M:%S%P}%F{$fadebar_cwd}%K{black}%B%b"
+RPROMPT="%F{$date}%K{black}%B %D{%I:%M:%S%P}%F{$fadebar_cwd}%K{black}%B%b"
 
 prompt_opts=(cr subst percent)
 
@@ -68,11 +68,11 @@ alias ls='LANG=en_US ls -Gh --file-type --color=tty --hide="\$RECYCLE.BIN" --hid
 alias subl="run /cygdrive/c/Program\ Files/Sublime\ Text\ 2/sublime_text.exe"
 alias heroku="/usr/local/heroku/bin/heroku"
 #alias virtualenv="/cygdrive/c/Python27/Scripts/virtualenv"
-#alias node="cygstart node"
 
 alias vm="ssh -l revan -p 2222 localhost"
 alias ilab="ssh rws114@man.cs.rutgers.edu"
 
+alias xclip="xclip -selection c"
 
 export PATH="/usr/local/heroku/bin:$PATH"
 export PATH=".gem/ruby/2.0.0/bin:$PATH"

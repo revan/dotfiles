@@ -3,3 +3,5 @@
 	email = rsopher@gmail.com
 [credential]
 	helper = cache
+[push]
+	default = simple

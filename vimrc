@@ -119,3 +119,6 @@ endif
 set cursorline
 set cursorcolumn
 
+"Arduino
+autocmd! BufNewFile,BufRead *.pde setlocal ft=arduino
+
