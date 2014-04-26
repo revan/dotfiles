@@ -2,7 +2,7 @@
 (evil-mode 1)
 
 (require 'linum-relative)
-(setq linum-relative-current-symbol "->" )
+(setq linum-relative-current-symbol "")
 (global-linum-mode 1)
 
 (require 'git-gutter-fringe+)
@@ -10,6 +10,8 @@
 (fringe-mode)
 
 (setq prelude-guru nil)
+
+(flyspell-mode 0)
 
 (setq-default indent-tabs-mode t)
 (setq c-default-style "linux"
