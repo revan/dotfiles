@@ -81,18 +81,31 @@ autoload -U select-word-style
 select-word-style bash
 
 #colorize ls
-alias ls='LANG=en_US ls -Gh --file-type --color=tty --hide="\$RECYCLE.BIN" --hide="System Volume Information" --hide="ntuser.dat*" --hide="NTUSER.DAT*"'
+alias ls='ls -G'
+#alias ls='LANG=en_US ls -Gh --file-type --color=tty --hide="\$RECYCLE.BIN" --hide="System Volume Information" --hide="ntuser.dat*" --hide="NTUSER.DAT*"'
 
 #alias subl="run /cygdrive/c/Program\ Files/Sublime\ Text\ 2/sublime_text.exe"
-alias heroku="/usr/local/heroku/bin/heroku"
+#alias heroku="/usr/local/heroku/bin/heroku"
 #alias virtualenv="/cygdrive/c/Python27/Scripts/virtualenv"
 
 alias vm="ssh -l revan -p 2222 localhost"
 alias ilab="ssh rws114@man.cs.rutgers.edu"
 
-alias xclip="xclip -selection c"
+#alias xclip="xclip -selection c"
 
-export PATH="/usr/local/heroku/bin:$PATH"
-export PATH=".gem/ruby/2.0.0/bin:$PATH"
+#export PATH="/usr/local/heroku/bin:$PATH"
+#export PATH=".gem/ruby/2.0.0/bin:$PATH"
 
+
+fpath=(/usr/local/share/zsh-completions $fpath)
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+source ~/.bash_profile
+source ~/.profile
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
 unalias rm
+

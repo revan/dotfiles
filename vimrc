@@ -1,26 +1,24 @@
 "Vundle packages
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 Bundle 'gmarik/vundle'
-Bundle 'tpope/vim-fugitive'
+"Bundle 'tpope/vim-fugitive'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'bling/vim-airline'
-Bundle 'bling/vim-bufferline'
-Bundle 'majutsushi/tagbar'
-Bundle 'ervandew/supertab'
+"Bundle 'bling/vim-bufferline'
+"Bundle 'majutsushi/tagbar'
+"Bundle 'ervandew/supertab'
 Bundle 'kien/ctrlp.vim'
 Bundle 'lepture/vim-jinja'
-Bundle 'jmcantrell/vim-virtualenv'
 Bundle 'tpope/vim-markdown'
 Bundle 'suan/vim-instant-markdown'
-"Bundle 'Raimondi/delimitMate'
-
-
+Bundle 'editorconfig/editorconfig-vim'
+call vundle#end()
 filetype plugin indent on
 
 
@@ -117,7 +115,7 @@ endif
 
 "Highlight active line and column
 set cursorline
-set cursorcolumn
+"set cursorcolumn
 
 "Arduino
 autocmd! BufNewFile,BufRead *.pde setlocal ft=arduino
