@@ -6,7 +6,7 @@ call vundle#begin()
 Bundle 'gmarik/vundle'
 "Bundle 'tpope/vim-fugitive'
 Bundle 'airblade/vim-gitgutter'
-Bundle 'altercation/vim-colors-solarized'
+"Bundle 'altercation/vim-colors-solarized'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'bling/vim-airline'
@@ -16,8 +16,10 @@ Bundle 'bling/vim-airline'
 Bundle 'kien/ctrlp.vim'
 Bundle 'lepture/vim-jinja'
 Bundle 'tpope/vim-markdown'
+Bundle 'tpope/vim-surround'
 Bundle 'suan/vim-instant-markdown'
 Bundle 'editorconfig/editorconfig-vim'
+"Bundle 'Valloric/YouCompleteMe'
 call vundle#end()
 filetype plugin indent on
 
@@ -84,6 +86,7 @@ nnoremap <S-K> {
 
 "Don't list buffers on airline
 let g:airline#extensions#bufferline#enabled = 0
+"let g:airline_powerline_fonts = 1
 
 "Completion
 let g:SuperTabDefaultCompletionType = "context"
@@ -120,3 +123,5 @@ set cursorline
 "Arduino
 autocmd! BufNewFile,BufRead *.pde setlocal ft=arduino
 
+"Copy to clipboard
+set clipboard=unnamedplus
