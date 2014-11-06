@@ -171,7 +171,8 @@ bindsym $mod+Tab focus right
 bindsym $mod+Shift+Tab focus left
 
 # i3lock
-bindsym mod1+Control+l exec i3lock -i ~/Dropbox/Wallpaper/mirrorsedge2-2.png
+#bindsym mod1+Control+l exec i3lock -i ~/Dropbox/Wallpaper/mirrorsedge2-2.png
+bindsym mod1+Control+l exec ~/dslock/dslock.sh
 
 # no title, because title in bar with i3blocks
 # new_window 1pixel
@@ -188,6 +189,8 @@ bindsym $mod+m exec i3-input -F '[con_mark=%s] focus' -P 'Go to mark: '
 for_window [class="^Chromium"] border 1pixel
 assign [window_role="pop-up" instance="crx_nckgahadagoaajjgafhacjanaoiihapd"] 5
 for_window [window_role="pop-up" instance="crx_nckgahadagoaajjgafhacjanaoiihapd"] border normal
+
+for_window [class="^Google-chrome-beta"] border 1pixel
 
 for_window [class="com-mathworks-util-PostVMInit" title="^Figure"] floating enable
 assign [class="com-mathworks-util-PostVMInit" title="^Figure"] 6
@@ -222,3 +225,6 @@ bindsym $mod+Mod1+9 [con_mark="9"] focus
 
 # monitor readjust
 bindsym $mod+Home exec autorandr -c
+
+# suspend
+bindsym $mod+End exec systemctl suspend
