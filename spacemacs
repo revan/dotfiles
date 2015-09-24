@@ -77,7 +77,7 @@
  ;; specified with an installed package.
  ;; Not used for now.
  dotspacemacs-default-package-repository nil
- )
+)
 
 ;; Initialization Hooks
 ;; --------------------
@@ -92,8 +92,12 @@
 This function is called at the very end of Spacemacs initialization."
   (progn
     (global-linum-mode)
-	(setq git-gutter-fr:side 'left-fringe)
-    (bind-keys :map evil-ex-map ("b" . helm-for-files)))
+    (setq git-gutter-fr:side 'left-fringe)
+    (bind-keys :map evil-ex-map ("b" . helm-for-files))
+    (bind-keys :map evil-ex-map ("e" . helm-find-files))
+    (eval-after-load "helm-mode"
+      '(bind-keys :map helm-map ("<tab>" . helm-execute-persistent-action)))
+    (setq indent-tabs-mode t))
 )
 
 ;; Custom variables
