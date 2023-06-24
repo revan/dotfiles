@@ -18,7 +18,7 @@ window_state() {
     COLOR=$GREEN
   elif [ "$(echo "$WINDOW" | jq '.["has-parent-zoom"]')" = "true" ]; then
     ICON+=$YABAI_PARENT_ZOOM
-    COLOR=$BLUE
+    COLOR=$YELLOW
   elif [[ $STACK_INDEX -gt 0 ]]; then
     LAST_STACK_INDEX=$(yabai -m query --windows --window stack.last | jq '.["stack-index"]')
     ICON+=$YABAI_STACK
