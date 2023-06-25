@@ -23,7 +23,7 @@ bar=(
   sticky=on
   padding_right=10
   padding_left=10
-  y_offset=-5
+  y_offset=-2
   margin=-2
 )
 
@@ -45,6 +45,7 @@ defaults=(
   background.height=26
   background.corner_radius=9
   background.border_width=2
+  popup.y_offset=6
   popup.background.border_width=2
   popup.background.corner_radius=9
   popup.background.border_color=$POPUP_BORDER_COLOR

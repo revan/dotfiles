@@ -4,68 +4,48 @@ update() {
   source "$CONFIG_DIR/colors.sh"
   source "$CONFIG_DIR/icons.sh"
 
-  NOTIFICATIONS="$(gh api notifications)"
-  COUNT="$(echo "$NOTIFICATIONS" | jq 'length')"
+  PULLS="$(gh api "search/issues?q=is:open+is:pr+review-requested:$(gh config get user -h github.com)+archived:false")"
+  COUNT="$(echo "$PULLS" | jq 'length')"
   args=()
-  if [ "$NOTIFICATIONS" = "[]" ]; then
-    args+=(--set $NAME icon=$BELL label="0")
+  if [ "$PULLS" = "[]" ]; then
+    args+=(--set $NAME icon=$GIT_PULL_REQUEST label="0")
   else
-    args+=(--set $NAME icon=$BELL_DOT label="$COUNT")
+    args+=(--set $NAME icon=$GIT_PULL_REQUEST label="$COUNT")
   fi
 
   PREV_COUNT=$(sketchybar --query github.bell | jq -r .label.value)
-  # For sound to play around with:
-  # afplay /System/Library/Sounds/Morse.aiff
-
   args+=(--remove '/github.notification\.*/')
 
   COUNTER=0
-  COLOR=$BLUE
+  COLOR=$GREEN
   args+=(--set github.bell icon.color=$COLOR)
 
-  while read -r repo url type title 
+  while read -r url number user title
   do
     COUNTER=$((COUNTER + 1))
-    IMPORTANT="$(echo "$title" | egrep -i "(deprecat|break|broke)")"
-    COLOR=$BLUE
+    COLOR=$GREEN
     PADDING=0
 
-    if [ "${repo}" = "" ] && [ "${title}" = "" ]; then
+    if [ "${url}" = "" ] && [ "${title}" = "" ]; then
       repo="Note"
-      title="No new notifications"
-    fi 
-    case "${type}" in
-      "'Issue'") COLOR=$GREEN; ICON=$GIT_ISSUE; URL="$(gh api "$(echo "${url}" | sed -e "s/^'//" -e "s/'$//")" | jq .html_url)"
-      ;;
-      "'Discussion'") COLOR=$WHITE; ICON=$GIT_DISCUSSION; URL="https://www.github.com/notifications"
-      ;;
-      "'PullRequest'") COLOR=$MAGENTA; ICON=$GIT_PULL_REQUEST; URL="$(gh api "$(echo "${url}" | sed -e "s/^'//" -e "s/'$//")" | jq .html_url)"
-      ;;
-      "'Commit'") COLOR=$WHITE; ICON=$GIT_COMMIT; URL="$(gh api "$(echo "${url}" | sed -e "s/^'//" -e "s/'$//")" | jq .html_url)"
-      ;;
-    esac
-    
-    if [ "$IMPORTANT" != "" ]; then
-      COLOR=$RED
-      ICON=􀁞
-      args+=(--set github.bell icon.color=$COLOR)
+      title="No new PRs"
     fi
     
     notification=(
-      label="$(echo "$title" | sed -e "s/^'//" -e "s/'$//")"
-      icon="$ICON $(echo "$repo" | sed -e "s/^'//" -e "s/'$//"):"
+      label="$(echo "$title" | sed -e "s/^'//" -e "s/'$//") - $(echo "$user" | sed -e "s/^'//" -e "s/'$//")"
+      icon="$GIT_PULL_REQUEST #$number"
       icon.padding_left="$PADDING"
       label.padding_right="$PADDING"
       icon.color=$COLOR
       position=popup.github.bell
       icon.background.color=$COLOR
       drawing=on
-      click_script="open $URL; sketchybar --set github.bell popup.drawing=off"
+      click_script="open $url; sketchybar --set github.bell popup.drawing=off"
     )
 
     args+=(--clone github.notification.$COUNTER github.template \
            --set github.notification.$COUNTER "${notification[@]}")
-  done <<< "$(echo "$NOTIFICATIONS" | jq -r '.[] | [.repository.name, .subject.latest_comment_url, .subject.type, .subject.title] | @sh')"
+  done <<< "$(echo "$PULLS" | jq -r '.items[] | [.html_url, .number, .user.login, .title] | @sh')"
 
   sketchybar -m "${args[@]}" > /dev/null
 
@@ -83,7 +63,7 @@ case "$SENDER" in
   ;;
   "mouse.entered") popup on
   ;;
-  "mouse.exited"|"mouse.exited.global") popup off
+  "mouse.exited.global") popup off
   ;;
   "mouse.clicked") popup toggle
   ;;
