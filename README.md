@@ -3,7 +3,7 @@
 Each top-level directory is a GNU stow "package". To install dotfiles for vim, for example, run:
 
 ```
-$ stow --target=~/ --restow vim
+$ stow --target=$HOME --restow vim
 ```
 
 which will alias `vim/.vimrc` as `~/.vimrc`. This will fail if the file already exists, in which
