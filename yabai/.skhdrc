@@ -41,3 +41,4 @@ ctrl + shift - s : yabai -m window --toggle sticky
 
 ctrl - o : /Users/revan/scratchpad.sh Obsidian
 ctrl - s : /Users/revan/scratchpad.sh Spotify
+ctrl - b : /Users/revan/scratchpad.sh Beeper

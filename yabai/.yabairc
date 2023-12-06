@@ -17,5 +17,5 @@ yabai -m config \
 	active_window_border_color 0xff5be382 \
 	normal_window_border_color 0xff555555
 
-yabai -m config window_topmost on
+yabai -m config window_topmost off
 yabai -m config window_shadow float
