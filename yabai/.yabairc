@@ -19,3 +19,4 @@ yabai -m config \
 
 yabai -m config window_topmost off
 yabai -m config window_shadow float
+yabai -m config mouse_drop_action stack

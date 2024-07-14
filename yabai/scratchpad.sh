@@ -14,6 +14,12 @@ if [[ "$is_minimized" == "true" ]]; then
 elif [[ "$is_visible" == "false" ]]; then
 	yabai -m window $window --space $current_space
 	yabai -m window --focus $window
+elif [[ -z "$window" ]]; then
+	open "/Applications/$1.app"
+        sleep 1
+	window=$(yabai -m query --windows | jq '.[] | select(.app=="'$1'").id')
+        yabai -m window "$window" --toggle float
+        yabai -m window "$window" --grid 4:4:1:1:2:2
 else
 	yabai -m window $window --minimize
 fi
