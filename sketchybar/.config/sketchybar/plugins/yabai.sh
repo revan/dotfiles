@@ -64,7 +64,7 @@ windows_on_spaces() {
 
   if [ "$apps" != "" ]; then
     args=(--set '/app\..*/' background.drawing=on
-      --animate sin 10)
+      --animate sin 1)
 
     while IFS= read -r app_id; do
       app_index=$((app_index + 1))
