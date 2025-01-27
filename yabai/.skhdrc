@@ -9,6 +9,8 @@ ctrl + alt - right : yabai -m window --warp east || (yabai -m window --display e
 ctrl + alt - up : yabai -m window --warp north || (yabai -m window --display north && yabai -m display --focus north)
 ctrl + alt - down : yabai -m window --warp south || (yabai -m window --display south && yabai -m display --focus south)
 
+ctrl + cmd - s : /Users/revan/stack.sh east
+
 # spaces
 ctrl + cmd - 1: yabai -m window --space 1 && sketchybar --trigger windows_on_spaces
 ctrl + cmd - 2: yabai -m window --space 2 && sketchybar --trigger windows_on_spaces
