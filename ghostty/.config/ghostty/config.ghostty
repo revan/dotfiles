@@ -1,0 +1,8 @@
+shell-integration = fish
+
+font-family = JetBrainsMono Nerd Font
+font-size = 13
+font-feature = liga
+font-feature = calt
+
+background-opacity = 0.97
