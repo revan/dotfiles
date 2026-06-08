@@ -1,0 +1,145 @@
+# AeroSpace config.
+#
+# Modifiers below are what AeroSpace *sees*, i.e. AFTER karabiner has remapped
+# keys (command-arrow -> alt-arrow). Keep karabiner in sync the same way.
+#
+# Docs: https://nikitabobko.github.io/AeroSpace/guide
+
+config-version = 2
+
+# Reload sketchybar so the workspace items get (re)created when AeroSpace starts.
+after-startup-command = ['exec-and-forget sketchybar']
+
+# Drive the sketchybar workspace indicators (see goodies#show-aerospace-workspaces-in-sketchybar).
+# Fires whenever the focused workspace changes.
+exec-on-workspace-change = ['/bin/bash', '-c',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+]
+
+start-at-login = true
+
+# bsp-like behavior: flatten + alternate orientation when nesting.
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# Mouse follows focus across monitors.
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Numbered workspaces 1..10 (ctrl+cmd-1..0 below).
+persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+
+[key-mapping]
+    preset = 'qwerty'
+
+# Gaps. No window gaps; the only reserved space is the bottom sketchybar.
+[gaps]
+    inner.horizontal = 0
+    inner.vertical   = 0
+    outer.left       = 0
+    outer.right      = 0
+    outer.top        = 0
+    outer.bottom     = 35
+
+# Float the scratchpad apps (AeroSpace does not auto-center floating windows).
+[[on-window-detected]]
+    if.app-id = 'md.obsidian'
+    run = ['layout floating']
+
+[[on-window-detected]]
+    if.app-id = 'com.spotify.client'
+    run = ['layout floating']
+
+[[on-window-detected]]
+    if.app-id = 'com.automattic.beeper.desktop'
+    run = ['layout floating']
+
+[mode.main.binding]
+
+    # --- in-workspace focus (ctrl-arrow) -------------------------------------
+    # `all-monitors-outer-frame` makes focus cross onto the adjacent monitor at
+    # the edge.
+    ctrl-left  = 'focus --boundaries all-monitors-outer-frame left'
+    ctrl-right = 'focus --boundaries all-monitors-outer-frame right'
+    ctrl-up    = 'focus --boundaries all-monitors-outer-frame up'
+    ctrl-down  = 'focus --boundaries all-monitors-outer-frame down'
+
+    # --- move window (ctrl+cmd-arrow -> ctrl-alt after karabiner) ------------
+    # Crosses to the adjacent monitor at the edge.
+    ctrl-alt-left  = 'move --boundaries all-monitors-outer-frame left'
+    ctrl-alt-right = 'move --boundaries all-monitors-outer-frame right'
+    ctrl-alt-up    = 'move --boundaries all-monitors-outer-frame up'
+    ctrl-alt-down  = 'move --boundaries all-monitors-outer-frame down'
+
+    # --- stack (ctrl+cmd-s) --------------------------------------------------
+    # AeroSpace has no window stacking; accordion is the closest analog.
+    ctrl-cmd-s = 'layout accordion tiles'
+
+    # --- switch to workspace (ctrl-1..0) ------------------------------------
+    ctrl-1 = 'workspace 1'
+    ctrl-2 = 'workspace 2'
+    ctrl-3 = 'workspace 3'
+    ctrl-4 = 'workspace 4'
+    ctrl-5 = 'workspace 5'
+    ctrl-6 = 'workspace 6'
+    ctrl-7 = 'workspace 7'
+    ctrl-8 = 'workspace 8'
+    ctrl-9 = 'workspace 9'
+    ctrl-0 = 'workspace 10'
+
+    # --- move window to workspace (ctrl+cmd-1..0) ----------------------------
+    ctrl-cmd-1 = 'move-node-to-workspace 1'
+    ctrl-cmd-2 = 'move-node-to-workspace 2'
+    ctrl-cmd-3 = 'move-node-to-workspace 3'
+    ctrl-cmd-4 = 'move-node-to-workspace 4'
+    ctrl-cmd-5 = 'move-node-to-workspace 5'
+    ctrl-cmd-6 = 'move-node-to-workspace 6'
+    ctrl-cmd-7 = 'move-node-to-workspace 7'
+    ctrl-cmd-8 = 'move-node-to-workspace 8'
+    ctrl-cmd-9 = 'move-node-to-workspace 9'
+    ctrl-cmd-0 = 'move-node-to-workspace 10'
+
+    # move window to prev/next workspace (ctrl+cmd-[ and ])
+    ctrl-cmd-leftSquareBracket  = 'move-node-to-workspace --wrap-around prev'
+    ctrl-cmd-rightSquareBracket = 'move-node-to-workspace --wrap-around next'
+
+    # --- focus prev/next workspace (ctrl-[ and ]) ----------------------------
+    ctrl-leftSquareBracket  = 'workspace --wrap-around prev'
+    ctrl-rightSquareBracket = 'workspace --wrap-around next'
+
+    # --- monitors (ctrl-p/n and ctrl+cmd-p/n) --------------------------------
+    ctrl-p = 'focus-monitor prev'
+    ctrl-n = 'focus-monitor --wrap-around next'
+    ctrl-cmd-p = 'move-node-to-monitor --focus-follows-window prev'
+    ctrl-cmd-n = 'move-node-to-monitor --wrap-around --focus-follows-window next'
+
+    # --- focus / float (ctrl-f, ctrl+cmd-space) ------------------------------
+    ctrl-f = 'fullscreen'
+    ctrl-cmd-space = 'layout floating tiling'  # toggle float (no auto-center)
+
+    # ctrl+shift-s would toggle sticky, but AeroSpace has no sticky windows yet:
+    # https://github.com/nikitabobko/AeroSpace/issues/2
+
+    # --- scratchpads (ctrl-o/s/b) --------------------------------------------
+    # Toggle each app onto the focused workspace, or stash it on a hidden one.
+    ctrl-o = 'exec-and-forget /Users/revan/.config/aerospace/scratchpad.sh md.obsidian obsidian'
+    ctrl-s = 'exec-and-forget /Users/revan/.config/aerospace/scratchpad.sh com.spotify.client spotify'
+    ctrl-b = 'exec-and-forget /Users/revan/.config/aerospace/scratchpad.sh com.automattic.beeper.desktop beeper'
+
+    # Enter service mode for layout resets / joins / config reload.
+    ctrl-shift-semicolon = 'mode service'
+
+# Service mode: reset layout, join, reload config.
+[mode.service.binding]
+    esc = ['reload-config', 'mode main']
+    r = ['flatten-workspace-tree', 'mode main']  # reset layout
+    f = ['layout floating tiling', 'mode main']
+    backspace = ['close-all-windows-but-current', 'mode main']
+
+    ctrl-alt-left  = ['join-with left', 'mode main']
+    ctrl-alt-down  = ['join-with down', 'mode main']
+    ctrl-alt-up    = ['join-with up', 'mode main']
+    ctrl-alt-right = ['join-with right', 'mode main']

@@ -56,13 +56,11 @@ defaults=(
 
 sketchybar --default "${defaults[@]}"
 
-source "$ITEM_DIR/spaces.sh"
-source "$ITEM_DIR/yabai.sh"
+source "$ITEM_DIR/aerospace.sh"
 source "$ITEM_DIR/media.sh"
-source "$ITEM_DIR/apps.sh"
 
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
 sketchybar --update
-sketchybar --trigger space_change
+sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused)"
 
 echo "sketchybar configuation loaded.."
