@@ -1,5 +1,5 @@
 case $@ in
-"ghostty" | "Notion Calendar")
+"ghostty")
   ;;
 "Brave Browser")
   icon_result=":brave_browser:"
@@ -173,7 +173,7 @@ case $@ in
 "Evernote Legacy")
   icon_result=":evernote_legacy:"
   ;;
-"Calendar" | "Fantastical")
+"Calendar" | "Fantastical" | "Notion Calendar")
   icon_result=":calendar:"
   ;;
 "Android Studio")
@@ -379,6 +379,12 @@ case $@ in
   ;;
 "Sequel Ace")
   icon_result=":sequel_ace:"
+  ;;
+"Claude")
+  icon_result=":claude:"
+  ;;
+"Beeper" | "Beeper Desktop")
+  icon_result=":beeper:"
   ;;
 *)
   icon_result=":default:"
