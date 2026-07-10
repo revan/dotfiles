@@ -2,12 +2,12 @@
 
 # AeroSpace workspace indicators.
 #
-# Workspaces are grouped into one bracket per monitor, so each monitor's
-# workspaces read as a distinct set. All the rendering is done by the single
-# controller item below (plugins/aerospace.sh): it highlights every *visible*
-# workspace (one per monitor, the focused one emphasized), draws an app-icon
-# strip per workspace, and rebuilds the per-monitor groups whenever a workspace
-# migrates between monitors.
+# Each monitor's bar shows only the workspaces that live on that monitor: the
+# controller pins every workspace item to its monitor's `display`. All the
+# rendering is done by the single controller item below (plugins/aerospace.sh):
+# it highlights every *visible* workspace (one per monitor, the focused one
+# emphasized), draws an app-icon strip per workspace, and rebuilds the
+# per-monitor groups whenever a workspace migrates between monitors.
 #
 # See: https://nikitabobko.github.io/AeroSpace/goodies#show-aerospace-workspaces-in-sketchybar
 
