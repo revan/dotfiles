@@ -7,8 +7,12 @@
 
 config-version = 2
 
-# Reload sketchybar so the workspace items get (re)created when AeroSpace starts.
-after-startup-command = ['exec-and-forget sketchybar']
+# Reload sketchybar so the workspace items get (re)created when AeroSpace
+# starts, then land on the saved flow (also runs the one-time flow migration).
+after-startup-command = [
+  'exec-and-forget sketchybar',
+  'exec-and-forget /Users/revan/.config/aerospace/flow.sh resume',
+]
 
 # Drive the sketchybar workspace indicators (see goodies#show-aerospace-workspaces-in-sketchybar).
 # Fires whenever the focused workspace changes.
@@ -29,8 +33,11 @@ default-root-container-orientation = 'auto'
 # Mouse follows focus across monitors.
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
-# Numbered workspaces 1..10 (ctrl+cmd-1..0 below).
-persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+# Workspaces are managed by flow.sh: the active flow's slots are named
+# "<flow>.1".."<flow>.10" and created on demand, so no persistent-workspaces
+# (it cannot cover dynamic names). Monitor placement (slots 1-6 -> main,
+# 7-10 -> secondary) is enforced by flow.sh instead of a static
+# [workspace-to-monitor-force-assignment] table.
 
 [key-mapping]
     preset = 'qwerty'
@@ -78,37 +85,43 @@ persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
     # AeroSpace has no window stacking; accordion is the closest analog.
     ctrl-cmd-s = 'layout accordion tiles'
 
-    # --- switch to workspace (ctrl-1..0) ------------------------------------
-    ctrl-1 = 'workspace 1'
-    ctrl-2 = 'workspace 2'
-    ctrl-3 = 'workspace 3'
-    ctrl-4 = 'workspace 4'
-    ctrl-5 = 'workspace 5'
-    ctrl-6 = 'workspace 6'
-    ctrl-7 = 'workspace 7'
-    ctrl-8 = 'workspace 8'
-    ctrl-9 = 'workspace 9'
-    ctrl-0 = 'workspace 10'
+    # --- switch to workspace slot in the active flow (ctrl-1..0) -------------
+    ctrl-1 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh go 1'
+    ctrl-2 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh go 2'
+    ctrl-3 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh go 3'
+    ctrl-4 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh go 4'
+    ctrl-5 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh go 5'
+    ctrl-6 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh go 6'
+    ctrl-7 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh go 7'
+    ctrl-8 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh go 8'
+    ctrl-9 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh go 9'
+    ctrl-0 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh go 10'
 
-    # --- move window to workspace (ctrl+cmd-1..0) ----------------------------
-    ctrl-cmd-1 = 'move-node-to-workspace 1'
-    ctrl-cmd-2 = 'move-node-to-workspace 2'
-    ctrl-cmd-3 = 'move-node-to-workspace 3'
-    ctrl-cmd-4 = 'move-node-to-workspace 4'
-    ctrl-cmd-5 = 'move-node-to-workspace 5'
-    ctrl-cmd-6 = 'move-node-to-workspace 6'
-    ctrl-cmd-7 = 'move-node-to-workspace 7'
-    ctrl-cmd-8 = 'move-node-to-workspace 8'
-    ctrl-cmd-9 = 'move-node-to-workspace 9'
-    ctrl-cmd-0 = 'move-node-to-workspace 10'
+    # --- move window to workspace slot (ctrl+cmd-1..0) -----------------------
+    ctrl-cmd-1 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh move 1'
+    ctrl-cmd-2 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh move 2'
+    ctrl-cmd-3 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh move 3'
+    ctrl-cmd-4 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh move 4'
+    ctrl-cmd-5 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh move 5'
+    ctrl-cmd-6 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh move 6'
+    ctrl-cmd-7 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh move 7'
+    ctrl-cmd-8 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh move 8'
+    ctrl-cmd-9 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh move 9'
+    ctrl-cmd-0 = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh move 10'
 
-    # move window to prev/next workspace (ctrl+cmd-[ and ])
-    ctrl-cmd-leftSquareBracket  = 'move-node-to-workspace --wrap-around prev'
-    ctrl-cmd-rightSquareBracket = 'move-node-to-workspace --wrap-around next'
+    # move window to prev/next slot within the flow (ctrl+cmd-[ and ])
+    ctrl-cmd-leftSquareBracket  = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh movecycle prev'
+    ctrl-cmd-rightSquareBracket = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh movecycle next'
 
-    # --- focus prev/next workspace (ctrl-[ and ]) ----------------------------
-    ctrl-leftSquareBracket  = 'workspace --wrap-around prev'
-    ctrl-rightSquareBracket = 'workspace --wrap-around next'
+    # --- focus prev/next slot within the flow (ctrl-[ and ]) -----------------
+    ctrl-leftSquareBracket  = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh cycle prev'
+    ctrl-rightSquareBracket = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh cycle next'
+
+    # --- flows (shift = flow layer: ctrl-shift focuses, ctrl+cmd-shift moves)
+    ctrl-shift-leftSquareBracket  = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh prev'
+    ctrl-shift-rightSquareBracket = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh next'
+    ctrl-cmd-shift-leftSquareBracket  = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh movewin-prev'
+    ctrl-cmd-shift-rightSquareBracket = 'exec-and-forget /Users/revan/.config/aerospace/flow.sh movewin-next'
 
     # --- monitors (ctrl-p/n and ctrl+cmd-p/n) --------------------------------
     ctrl-p = 'focus-monitor prev'
@@ -132,26 +145,17 @@ persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
     # Enter service mode for layout resets / joins / config reload.
     ctrl-shift-semicolon = 'mode service'
 
-# Service mode: reset layout, join, reload config.
+# Service mode: reset layout, join, reload config, flow management.
 [mode.service.binding]
     esc = ['reload-config', 'mode main']
     r = ['flatten-workspace-tree', 'mode main']  # reset layout
     f = ['layout floating tiling', 'mode main']
     backspace = ['close-all-windows-but-current', 'mode main']
 
+    n = ['exec-and-forget /Users/revan/.config/aerospace/flow.sh new', 'mode main']
+    d = ['exec-and-forget /Users/revan/.config/aerospace/flow.sh delete', 'mode main']
+
     ctrl-alt-left  = ['join-with left', 'mode main']
     ctrl-alt-down  = ['join-with down', 'mode main']
     ctrl-alt-up    = ['join-with up', 'mode main']
     ctrl-alt-right = ['join-with right', 'mode main']
-
-[workspace-to-monitor-force-assignment]
-    1 = 'main'
-    2 = 'main'
-    3 = 'main'
-    4 = 'main'
-    5 = 'main'
-    6 = 'main'
-    7 = 'secondary'
-    8 = 'secondary'
-    9 = 'secondary'
-    10 = 'secondary'
