@@ -24,28 +24,11 @@ rm -f "${TMPDIR:-/tmp}/sketchybar_aerospace.sig" "${TMPDIR:-/tmp}/sketchybar_aer
 sketchybar --add event aerospace_workspace_change
 sketchybar --add event flow_change
 
-# "+" — create a new flow (osascript name prompt). Also anchors the dynamic
-# flow.<name> items, which flows.sh inserts before it.
-flow_add=(
-  display=1
-  icon="+"
-  icon.color="$GREY"
-  icon.padding_left=8
-  icon.padding_right=8
-  padding_left=2
-  padding_right=2
-  background.height=26
-  background.corner_radius=9
-  background.drawing=off
-  click_script="$HOME/.config/aerospace/flow.sh new"
-)
-sketchybar --add item flow_add left \
-  --set flow_add "${flow_add[@]}"
-
 # One item per workspace slot. Slots exist independently of the underlying
 # workspaces (empty flow workspaces die; the bar still shows all ten). Order
 # and bracketing are fixed up by the controller; the static props below are
-# everything that never changes.
+# everything that never changes. Added before flow_add so the workspaces sit
+# to the left of the flow strip.
 for sid in 1 2 3 4 5 6 7 8 9 10; do
   space=(
     icon="$sid"
@@ -65,6 +48,25 @@ for sid in 1 2 3 4 5 6 7 8 9 10; do
   sketchybar --add item space.$sid left \
     --set space.$sid "${space[@]}"
 done
+
+# "+" — create a new flow (osascript name prompt). Also anchors the dynamic
+# flow.<name> items, which flows.sh inserts before it. Added after the
+# workspace slots so the flow strip renders to their right.
+flow_add=(
+  display=1
+  icon="+"
+  icon.color="$GREY"
+  icon.padding_left=8
+  icon.padding_right=8
+  padding_left=2
+  padding_right=2
+  background.height=26
+  background.corner_radius=9
+  background.drawing=off
+  click_script="$HOME/.config/aerospace/flow.sh new"
+)
+sketchybar --add item flow_add left \
+  --set flow_add "${flow_add[@]}"
 
 # Controller: a hidden item that renders every space item in one atomic pass.
 # updates=on so it keeps ticking even though it is never drawn.
