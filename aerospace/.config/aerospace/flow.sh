@@ -73,6 +73,52 @@ bar_refresh() {
   sketchybar --trigger flow_change >/dev/null 2>&1 || true
 }
 
+# AeroSpace's "main" monitor: the one with the menu bar, which is also the one
+# where a workspace that does not exist yet is materialized. Nothing takes
+# "main" as a monitor *id* (only move-workspace-to-monitor takes it as a
+# pattern), but it is NSScreen.screens[0], i.e. nsscreen id 1.
+main_monitor_id() {
+  aerospace list-monitors \
+    --format '%{monitor-appkit-nsscreen-screens-id}|%{monitor-id}' 2>/dev/null |
+    awk -F'|' '$1==1 {print $2; exit}'
+}
+
+# Every monitor's visible workspace, as "<monitor-id>|<workspace>" lines.
+visible_snapshot() {
+  aerospace list-workspaces --monitor all --visible \
+    --format '%{monitor-id}|%{workspace}' 2>/dev/null
+}
+
+# Undo AeroSpace's backfill of the monitors we did not mean to touch.
+#
+# A workspace that does not exist yet is materialized on the *main* monitor, so
+# focusing a slot 7-10 first shows it there and enforce_monitor then moves it to
+# the secondary. The monitor thus vacated does not go back to the workspace it
+# was showing: AeroSpace backfills it with a workspace of its own choosing,
+# which in practice is a scratchpad stash ("beeper" et al) - so switching a
+# workspace on one monitor pops a stashed window into view on the other.
+# Re-show the recorded workspace on every monitor that changed and is not the
+# one now displaying <target-workspace>.
+restore_snapshot() { # <snapshot> <target-workspace>
+  local mon ws cur
+  while IFS='|' read -r mon ws; do
+    [ -n "$mon" ] || continue
+    cur=$(aerospace list-workspaces --monitor "$mon" --visible 2>/dev/null)
+    [ "$cur" = "$ws" ] && continue # untouched
+    [ "$cur" = "$2" ] && continue  # this is the switch that was asked for
+    # An empty workspace stops existing once it is hidden. Focusing it again
+    # recreates it on the main monitor, which is the right place only when the
+    # main monitor is the one being repaired; anywhere else it would displace a
+    # workspace instead of restoring one, so leave that monitor alone.
+    aerospace list-workspaces --monitor "$mon" | grep -qx "$ws" ||
+      [ "$mon" = "$(main_monitor_id)" ] || continue
+    aerospace focus-monitor "$mon" >/dev/null 2>&1 || true
+    aerospace workspace "$ws" >/dev/null 2>&1 || true
+  done <<EOF
+$1
+EOF
+}
+
 # First run: bootstrap state and adopt the legacy numeric workspaces 1..10
 # into a "main" flow. The existence of the flows file suppresses this forever.
 ensure_state() {
@@ -97,14 +143,17 @@ ensure_state() {
 }
 
 do_go() { # <slot>
-  local f ws
+  local f ws snap
   f=$(active_flow)
   ws="$f.$1"
+  snap=$(visible_snapshot)
   aerospace workspace "$ws" # creates the workspace if it died (all slots work)
   enforce_monitor "$ws" "$1"
-  # Re-assert focus in case the move changed monitors. Errors are silenced:
-  # this is a duplicate of the call above, which already surfaced any real
-  # failure, and the usual output here is just the "already focused" noop tip.
+  restore_snapshot "$snap" "$ws"
+  # Re-assert focus in case the move changed monitors, or restore_snapshot
+  # focused another one. Errors are silenced: this is a duplicate of the call
+  # above, which already surfaced any real failure, and the usual output here is
+  # just the "already focused" noop tip.
   aerospace workspace "$ws" >/dev/null 2>&1 || true
   set_last_slot "$f" "$1"
 }
@@ -177,7 +226,7 @@ do_cycle() { # <next|prev> <go|move>
 }
 
 do_movewin() { # next|prev
-  local cur f slot tf target
+  local cur f slot tf target snap
   f=$(active_flow)
   cur=$(aerospace list-workspaces --focused)
   case "$cur" in
@@ -187,8 +236,10 @@ do_movewin() { # next|prev
   tf=$(adjacent_flow "$1")
   [ "$tf" = "$f" ] && exit 0
   target="$tf.$slot"
+  snap=$(visible_snapshot)
   aerospace move-node-to-workspace --focus-follows-window "$target"
   enforce_monitor "$target" "$slot"
+  restore_snapshot "$snap" "$target"
   aerospace workspace "$target"
   write_file "$ACTIVE_FILE" "$tf"
   set_last_slot "$tf" "$slot"
