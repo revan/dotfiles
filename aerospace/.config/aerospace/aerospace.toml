@@ -76,15 +76,8 @@ persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
     # --- stack (ctrl+cmd-s) --------------------------------------------------
     # AeroSpace has no window stacking; accordion is the closest analog.
-    # Cycles h_tiles -> v_tiles -> accordion. `layout` alone only toggles between
-    # two, so branch on the current layout. Nested containers have their
-    # orientation forced by normalization, so there it just toggles
-    # tiles/accordion.
-    ctrl-cmd-s = '''exec-and-forget case "$(aerospace list-windows --focused --format '%{window-parent-container-layout}')" in
-        h_tiles) aerospace layout v_tiles ;;
-        v_tiles) aerospace layout h_accordion ;;
-        *)       aerospace layout h_tiles ;;
-    esac'''
+    # Cycles h_tiles -> v_tiles -> accordion.
+    ctrl-cmd-s = 'exec-and-forget /Users/revan/.config/aerospace/cycle-layout.sh'
 
     # --- switch to workspace (ctrl-1..0) ------------------------------------
     ctrl-1 = 'workspace 1'
@@ -111,12 +104,13 @@ persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
     ctrl-cmd-0 = 'move-node-to-workspace 10'
 
     # move window to prev/next workspace (ctrl+cmd-[ and ])
-    ctrl-cmd-leftSquareBracket  = 'move-node-to-workspace --wrap-around prev'
-    ctrl-cmd-rightSquareBracket = 'move-node-to-workspace --wrap-around next'
+    # The script skips the scratchpad stash workspaces (obsidian/spotify/beeper).
+    ctrl-cmd-leftSquareBracket  = 'exec-and-forget /Users/revan/.config/aerospace/cycle-workspace.sh move prev'
+    ctrl-cmd-rightSquareBracket = 'exec-and-forget /Users/revan/.config/aerospace/cycle-workspace.sh move next'
 
     # --- focus prev/next workspace (ctrl-[ and ]) ----------------------------
-    ctrl-leftSquareBracket  = 'workspace --wrap-around prev'
-    ctrl-rightSquareBracket = 'workspace --wrap-around next'
+    ctrl-leftSquareBracket  = 'exec-and-forget /Users/revan/.config/aerospace/cycle-workspace.sh focus prev'
+    ctrl-rightSquareBracket = 'exec-and-forget /Users/revan/.config/aerospace/cycle-workspace.sh focus next'
 
     # --- monitors (ctrl-p/n and ctrl+cmd-p/n) --------------------------------
     ctrl-p = 'focus-monitor prev'
