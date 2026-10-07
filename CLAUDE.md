@@ -16,12 +16,12 @@ Stow fails if a target file already exists (not a symlink) — verify and delete
 
 ## Window-management stack (macOS)
 
-`aerospace`, `sketchybar`, and `karabiner` are tightly coupled and edited together:
+`yabai`, `sketchybar`, and `karabiner` are tightly coupled and edited together:
 
-- **aerospace** (`aerospace/.config/aerospace/aerospace.toml`) is the tiling WM. Modifiers in its bindings are what AeroSpace sees *after* karabiner's remapping (e.g. command-arrow becomes alt-arrow) — keep the two in sync. `exec-on-workspace-change` fires `sketchybar --trigger aerospace_workspace_change`, the event that drives the bar. Bindings invoke helper scripts by absolute `~/`-installed path (`/Users/revan/.config/aerospace/*.sh`).
-- **flows** (`aerospace/.config/aerospace/flow.sh`) are named sets of workspaces, one active at a time. A flow `<f>` owns workspaces `<f>.1`–`<f>.10`, created on demand (so no `persistent-workspaces`); slots 1–6 go to the main monitor, 7–10 to the secondary, enforced by the script rather than a static `[workspace-to-monitor-force-assignment]`. State lives in `~/.local/state/aerospace/`; the script fires `sketchybar --trigger flow_change` on flow changes. Scratchpad stash workspaces (`aerospace/.config/aerospace/scratchpad.sh`) have no dot in the name — the dot is what marks a workspace as belonging to a flow.
-- **sketchybar** (`sketchybar/.config/sketchybar/`) is the status bar. `sketchybarrc` sources `colors.sh`/`icons.sh` and wires up `items/` (definitions) which reference `plugins/` (scripts that produce the actual content). `items/aerospace.sh` creates ten static slot items plus the flow strip; hidden controller items render everything in one atomic pass via `plugins/aerospace.sh` (slots, per-monitor pinning/brackets) and `plugins/flows.sh` (flow strip), reacting to the triggers above. Plugin scripts must stay bash 3.2-compatible (no associative arrays).
-- **yabai + skhd** (`yabai/`) and the unsourced `items/{yabai,spaces,apps}.sh` / `plugins/{yabai,space,app}.sh` are the legacy pre-aerospace stack — still in the repo but inactive; don't edit them for current behavior.
+- **yabai** (`yabai/.yabairc`) is a bsp tiling WM. It reserves space for the bar via `external_bar` and emits signals (`window_focused`, `window_created`, `window_destroyed`) that call `sketchybar --trigger ...`.
+- **skhd** (`yabai/.skhdrc`) holds the keybindings that drive yabai. Many space-switch bindings also fire `sketchybar --trigger windows_on_spaces` to keep the bar in sync. Helper scripts `yabai/stack.sh` and `yabai/scratchpad.sh` are invoked from bindings (note: bindings may reference absolute `~/`-installed paths like `/Users/revan/stack.sh`).
+- **karabiner** remaps keys *before* skhd sees them (e.g. command-arrow becomes alt) — keep skhd's expected modifiers consistent with karabiner's remapping.
+- **sketchybar** (`sketchybar/.config/sketchybar/`) is the status bar. `sketchybarrc` sources `colors.sh`/`icons.sh` and wires up `items/` (definitions) which reference `plugins/` (scripts that produce the actual content, often reacting to the yabai triggers above).
 
 ## nvim
 

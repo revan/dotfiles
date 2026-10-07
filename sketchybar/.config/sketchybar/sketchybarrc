@@ -62,6 +62,5 @@ source "$ITEM_DIR/media.sh"
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
 sketchybar --update
 sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused)"
-sketchybar --trigger flow_change
 
 echo "sketchybar configuation loaded.."
