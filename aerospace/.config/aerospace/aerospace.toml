@@ -76,7 +76,15 @@ persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
     # --- stack (ctrl+cmd-s) --------------------------------------------------
     # AeroSpace has no window stacking; accordion is the closest analog.
-    ctrl-cmd-s = 'layout accordion tiles'
+    # Cycles h_tiles -> v_tiles -> accordion. `layout` alone only toggles between
+    # two, so branch on the current layout. Nested containers have their
+    # orientation forced by normalization, so there it just toggles
+    # tiles/accordion.
+    ctrl-cmd-s = '''exec-and-forget case "$(aerospace list-windows --focused --format '%{window-parent-container-layout}')" in
+        h_tiles) aerospace layout v_tiles ;;
+        v_tiles) aerospace layout h_accordion ;;
+        *)       aerospace layout h_tiles ;;
+    esac'''
 
     # --- switch to workspace (ctrl-1..0) ------------------------------------
     ctrl-1 = 'workspace 1'
